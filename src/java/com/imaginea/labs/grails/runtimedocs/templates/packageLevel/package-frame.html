@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>
+${packageDoc.getName()}
+</TITLE>
+<%
+def classTypes = [
+    "Interface" : { it.isInterface() },
+    "Class" : { it.isClass() && !it.getParentClasses()*.getName().contains('java.lang.Throwable') },
+    "Enum" : { it.isEnum() },
+    "Exception" : { it.isClass() && it.getParentClasses()*.getName().contains('java.lang.Exception') },
+    "Error" : { it.isClass() && it.getParentClasses()*.getName().contains('java.lang.Error') },
+    "Annotation Type" : { it.isAnnotation() }
+]
+def pluralize = { name -> name + (name.endsWith("s") ? "es" : "s") }
+%>
+
+<META NAME="keywords" CONTENT="${packageDoc.getPackagePath()} package">
+
+<LINK REL ="stylesheet" TYPE="text/css" HREF="${packageDoc.getRelativeRootPath()}stylesheet.css" TITLE="Style">
+
+</HEAD>
+
+<BODY BGCOLOR="white">
+<FONT size="+1" CLASS="FrameTitleFont">
+<A HREF="package-summary.html" target="classFrame">${packageDoc.getName()}</A></FONT>
+
+<%
+def isVisible = { 
+	java.lang.reflect.Modifier.isPublic(it.getModifiers()) || (java.lang.reflect.Modifier.isProtected(it.getModifiers()) 
+	&& props.protectedScope == 'true') || (!java.lang.reflect.Modifier.isProtected(it.getModifiers()) && !java.lang.reflect.Modifier.isPrivate(it.getModifiers()) && props.packageScope == 'true') || props.privateScope == 'true' 
+}
+classTypes.each{ k, v ->
+    if (packageDoc.getAllClasses().any{ isVisible(it) && v(it) }) {
+%>
+
+<TABLE BORDER="0" WIDTH="100%" SUMMARY="">
+<TR>
+<TD NOWRAP><FONT size="+1" CLASS="FrameHeadingFont">
+${pluralize(k)}</FONT>&nbsp;
+<FONT CLASS="FrameItemFont"><%
+    for (classDoc in packageDoc.getAllClasses().findAll{ isVisible(it) && v(it) }) {
+        %><BR><A HREF="${classDoc.getSimpleName()}.html" title="${k.toLowerCase()} in ${packageDoc.getName()}" target="classFrame"><%
+        if (classDoc.isInterface()) { %><I><% }
+        %>${classDoc.getSimpleName()}<%
+        if (classDoc.isInterface()) { %></I><% }
+        %></A><%
+    }
+%></FONT></TD>
+</TR>
+</TABLE>
+<% } %>
+<% } %>
+
+</BODY>
+</HTML>
