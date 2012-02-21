@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns='http://maven.apache.org/POM/4.0.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd'>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.grails.plugins</groupId>
+  <artifactId>grails-runtime-docs</artifactId>
+  <packaging>zip</packaging>
+  <version>1.0.0-M1</version>
+  <name>Grails Runtime Docs</name>
+  <description>\
+Generates Java and Groovy documentation for a Grails Application from runtime including the dynamically added methods and properties.
+Helps to easily navigate through the Grails artifacts by categorising all the classes into Controllers, Services, Domains, Commands
+and Tag Libraries.
+</description>
+  <url>http://grails.org/plugin/grails-runtime-docs</url>
+  <licenses>
+    <license>
+      <name>Apache License 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <organization>
+    <name>Imaginea</name>
+    <url>http://www.imaginea.com/</url>
+  </organization>
+  <developers>
+    <developer>
+      <name>Srinath Anantha</name>
+      <email>srinath.anantha@gmail.com</email>
+    </developer>
+  </developers>
+  <dependencies />
+</project>

@@ -1,0 +1,24 @@
+<plugin name='grails-runtime-docs' version='1.0.0-M1' grailsVersion='1.3.x &gt; *'>
+  <author>Srinath Anantha</author>
+  <authorEmail>srinath.anantha@gmail.com</authorEmail>
+  <title>Grails Runtime Docs</title>
+  <description>\
+Generates Java and Groovy documentation for a Grails Application from runtime including the dynamically added methods and properties.
+Helps to easily navigate through the Grails artifacts by categorising all the classes into Controllers, Services, Domains, Commands
+and Tag Libraries.
+</description>
+  <documentation>http://grails.org/plugin/grails-runtime-docs</documentation>
+  <type>GrailsRuntimeDocsGrailsPlugin</type>
+  <resources />
+  <repositories>
+    <repository name='grailsCentral' url='http://plugins.grails.org' />
+    <repository name='http://repo.grails.org/grails/plugins' url='http://repo.grails.org/grails/plugins/' />
+    <repository name='http://repo.grails.org/grails/core' url='http://repo.grails.org/grails/core/' />
+    <repository name='grailsCore' url='http://svn.codehaus.org/grails/trunk/grails-plugins' />
+    <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
+  </repositories>
+  <dependencies />
+  <plugins />
+  <runtimePluginRequirements />
+  <behavior />
+</plugin>
