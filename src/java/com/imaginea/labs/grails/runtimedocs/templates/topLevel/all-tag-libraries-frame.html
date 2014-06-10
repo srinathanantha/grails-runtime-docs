@@ -1,37 +1,31 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <HTML>
 <HEAD>
-<TITLE>
-All Services
-</TITLE>
-<link href="groovy.ico" type="image/x-icon" rel="shortcut icon">
-<link href="groovy.ico" type="image/x-icon" rel="icon">
-<LINK REL ="stylesheet" TYPE="text/css" HREF="stylesheet.css" TITLE="Style">
+    <TITLE>
+        Tag Libraries
+    </TITLE>
+    <link href="groovy.ico" type="image/x-icon" rel="shortcut icon">
+    <link href="groovy.ico" type="image/x-icon" rel="icon">
+    <LINK REL="stylesheet" TYPE="text/css" HREF="stylesheet.css" TITLE="Style">
 
 </HEAD>
 
 <BODY BGCOLOR="white">
-<FONT size="+1" CLASS="FrameHeadingFont">
-<B>All Services</B></FONT>
+<h1 class="bar">Tag Libraries</h1>
 
-<BR>
-
-<TABLE BORDER="0" WIDTH="100%" SUMMARY="">
-<TR>
-<TD NOWRAP><FONT CLASS="FrameItemFont">
-<!--<A HREF="org/omg/CORBA/ARG_IN.html" title="interface in org.omg.CORBA" target="classFrame"><I>ARG_IN</I></A>-->
-<!--<BR>-->
+<div class="indexContainer">
+    <ul>
 <%
   def isVisible = { java.lang.reflect.Modifier.isPublic(it.getModifiers()) || (java.lang.reflect.Modifier.isProtected(it.getModifiers()) && props.protectedScope == 'true') || (!java.lang.reflect.Modifier.isProtected(it.getModifiers()) && !java.lang.reflect.Modifier.isPrivate(it.getModifiers()) && props.packageScope == 'true') || props.privateScope == 'true' }
   for (classDoc in rootDoc.getAllTagLibs().findAll(isVisible)) {
     def packageName = classDoc.getPackage();
-    %><A HREF="${classDoc.getFullPathName()}.html" title="${classDoc.getTypeDescription().toLowerCase()} in ${packageName}" target="classFrame">${classDoc.isInterface()?'<I>':''}${classDoc.getSimpleName()}${classDoc.isInterface()?'</I>':''}</A>
-<BR>
+    String title = packageName ? (classDoc.getTypeDescription() + " in " + packageName) : "";
+        %>
+        <LI><A HREF="${classDoc.getFullPathName()}.html"
+               title="${title}" target="classFrame">${classDoc.isInterface()?'<I>':''}${classDoc.getSimpleName()}${classDoc.isInterface()?'</I>':''}</A>
+        </LI>
 <% } %>
-	  
-</FONT></TD>
-</TR>
-</TABLE>
-
+    </ul>
+</div>
 </BODY>
 </HTML>

@@ -3,7 +3,8 @@ package com.imaginea.labs.grails.runtimedocs;
 import groovy.text.GStringTemplateEngine;
 import groovy.text.Template;
 import groovy.text.TemplateEngine;
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
+import org.codehaus.groovy.runtime.DefaultGroovyMethodsSupport;
+import org.codehaus.groovy.runtime.IOGroovyMethods;
 import org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager;
 
 import java.io.FileOutputStream;
@@ -43,7 +44,7 @@ public class GroovyRuntimeDocTemplateEngine {
 
     String applyClassTemplates(ClassDoc classDoc) {
         String templatePath = classTemplatePaths.get(0);
-        String templateWithBindingApplied = "";
+        String templateWithBindingApplied = null;
         try {
             Template t = classTemplates.get(templatePath);
             if (t == null) {
@@ -55,7 +56,7 @@ public class GroovyRuntimeDocTemplateEngine {
             binding.put("props", properties);
             templateWithBindingApplied = t.make(binding).toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Exception generating file '" + classDoc.getFullPathName() + "' : " + e.getMessage());
         }
         return templateWithBindingApplied;
     }
@@ -73,7 +74,7 @@ public class GroovyRuntimeDocTemplateEngine {
             binding.put("props", properties);
             templateWithBindingApplied = t.make(binding).toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Exception generating file '" + template + "' : " + e.getMessage());
         }
         return templateWithBindingApplied;
     }
@@ -91,7 +92,7 @@ public class GroovyRuntimeDocTemplateEngine {
             binding.put("props", properties);
             templateWithBindingApplied = t.make(binding).toString();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Exception in generating file '" + template + "' : " + e.getMessage());
         }
         return templateWithBindingApplied;
     }
@@ -114,13 +115,13 @@ public class GroovyRuntimeDocTemplateEngine {
             try {
                 InputStream inputStream = ((ClasspathResourceManager) resourceManager).getInputStream(template);
                 outputStream = new FileOutputStream(destFileName);
-                DefaultGroovyMethods.leftShift(outputStream, inputStream);
+                IOGroovyMethods.leftShift(outputStream, inputStream);
             } catch (IOException e) {
-                System.err.println("Resource " + template + " skipped due to: " + e.getMessage());
+                System.out.println("Resource " + template + " skipped due to: " + e.getMessage());
             } catch (NullPointerException e) {
-                System.err.println("Resource " + template + " not found so skipped");
+                System.out.println("Resource " + template + " not found so skipped");
             } finally {
-                DefaultGroovyMethods.closeQuietly(outputStream);
+                DefaultGroovyMethodsSupport.closeQuietly(outputStream);
             }
         }
     }

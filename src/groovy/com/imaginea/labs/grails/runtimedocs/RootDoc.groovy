@@ -1,8 +1,9 @@
 package com.imaginea.labs.grails.runtimedocs
 
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
-import org.codehaus.groovy.grails.compiler.support.GrailsResourceLoader
-import org.springframework.core.io.UrlResource
+import org.codehaus.groovy.grails.plugins.web.filters.FiltersConfigArtefactHandler
+import org.grails.plugin.resources.artefacts.ResourceMapperArtefactHandler
+import org.grails.plugin.resources.artefacts.ResourcesArtefactHandler
 
 /**
  * Builds Data Structures needed for documenting both compile-time and runtime properties of all Grails Artifacts  
@@ -11,14 +12,15 @@ import org.springframework.core.io.UrlResource
  */
 class RootDoc {
     Set<ClassDoc> allClasses = new TreeSet<ClassDoc>();
-    Set<PackageDoc> allPackages = new TreeSet<PackageDoc>();
-    Set<ClassDoc> allControllers = new TreeSet<ClassDoc>();
-    Set<ClassDoc> allServices = new TreeSet<ClassDoc>();
-    Set<ClassDoc> allDomains = new TreeSet<ClassDoc>();
+    Set<ClassDoc> allConfigClasses = new TreeSet<ClassDoc>();
     Set<ClassDoc> allCommands = new TreeSet<ClassDoc>();
+    Set<ClassDoc> allControllers = new TreeSet<ClassDoc>();
+    Set<ClassDoc> allDomains = new TreeSet<ClassDoc>();
+    Set<PackageDoc> allPackages = new TreeSet<PackageDoc>();
+    Set<ClassDoc> allServices = new TreeSet<ClassDoc>();
     Set<ClassDoc> allTagLibs = new TreeSet<ClassDoc>();
 
-    public static final DEFAULT_PACKAGE = "DefaultPackage";
+    public static final DEFAULT_PACKAGE = "default";
 
     public static Map<String, ClassDoc> allClassesMap = new HashMap<String, ClassDoc>();
 
@@ -27,14 +29,13 @@ class RootDoc {
     }
 
     void buildRootDoc(DefaultGrailsApplication grailsApp) {
-        GrailsResourceLoader resourceLoader = grailsApp.getResourceLoader();
         grailsApp.allClasses.each { def clazz ->
             if (!allClassesMap.containsKey(clazz.getName())) {
-                URL url = resourceLoader.loadGroovySource(clazz.getName());
-                UrlResource urlResource = (url != null) ? new UrlResource(url) : null;
-                PackageDoc packageDoc = allPackages.find { it.getName() == (clazz.getPackage() ? clazz.getPackage().getName() : DEFAULT_PACKAGE)}
+                PackageDoc packageDoc = allPackages.find {
+                    it.getName() == (clazz.getPackage() ? clazz.getPackage().getName() : DEFAULT_PACKAGE)
+                }
                 packageDoc = packageDoc ?: new PackageDoc(clazz.getPackage()?.getName());
-                ClassDoc classDoc = new ClassDoc(clazz, clazz.getMetaClass(), urlResource);
+                ClassDoc classDoc = new ClassDoc(clazz, clazz.getMetaClass());
                 allClasses.add(classDoc);
                 allClassesMap.put(clazz.getName(), classDoc);
                 packageDoc.addClassDoc(classDoc);
@@ -49,12 +50,23 @@ class RootDoc {
                     allTagLibs.add(classDoc);
                 else if (clazz.getSimpleName().endsWith("Command"))
                     allCommands.add(classDoc);
+                else if (grailsApp.isBootstrapClass(clazz) || grailsApp.isCodecClass(clazz)
+                        || grailsApp.isUrlMappingsClass(clazz)
+                        || clazz.getSimpleName().endsWith("Config")
+                        || grailsApp.isArtefactOfType(FiltersConfigArtefactHandler.TYPE, clazz)
+                        || grailsApp.isArtefactOfType(ResourcesArtefactHandler.TYPE, clazz)
+                        || grailsApp.isArtefactOfType(ResourceMapperArtefactHandler.TYPE, clazz))
+                    allConfigClasses.add(classDoc);
             }
         }
     }
 
     public TreeSet<ClassDoc> getAllClasses() {
         return allClasses;
+    }
+
+    public TreeSet<ClassDoc> getAllConfigClasses() {
+        return allConfigClasses;
     }
 
     public TreeSet<ClassDoc> getAllControllers() {

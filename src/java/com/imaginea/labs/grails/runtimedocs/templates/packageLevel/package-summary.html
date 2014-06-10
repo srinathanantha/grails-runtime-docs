@@ -34,91 +34,142 @@ function windowTitle()
 </head>
 
 <body BGCOLOR="white" onload="windowTitle();">
-<hr>
 
 <!-- ========= START OF TOP NAVBAR ======= -->
-<a name="navbar_top"><!-- --></a>
-<table summary="" width="100%" border="0" cellpadding="1" cellspacing="0">
-<tbody><tr>
-<td colspan="2" class="NavBarCell1" bgcolor="#eeeeff">
-<a name="navbar_top_firstrow"><!-- --></a>
-<table summary="" border="0" cellpadding="0" cellspacing="3">
-  <tbody><tr valign="top" align="center">
-  <td class="NavBarCell1" bgcolor="#eeeeff">    <a href="${packageDoc.getRelativeRootPath()}overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
-  <td class="NavBarCell1Rev" bgcolor="#ffffff"> &nbsp;<font class="NavBarFont1Rev"><b>Package</b></font>&nbsp;</td>
-  <td class="NavBarCell1" bgcolor="#eeeeff">    <font class="NavBarFont1">Class</font>&nbsp;</td>
-  <!--
-  <td class="NavBarCell1" bgcolor="#eeeeff">    <a href="overview-tree.html"><font class="NavBarFont1"><b>Tree</b></font></a>&nbsp;</td>
-  -->
-  <td class="NavBarCell1" bgcolor="#eeeeff">    <a href="${packageDoc.getRelativeRootPath()}help-doc.html"><font class="NavBarFont1"><b>Help</b></font></a>&nbsp;</td>
-  </tr>
-</tbody></table>
-</td>
-<td rowspan="3" valign="top" align="right"><em>
-    <% if (props.header) { %><b>${props.header}</b><% } %>
-</em>
-</td>
-</tr>
+<div class="topNav">
+    <a name="navbar_top">
+        <!--   -->
+    </a>
+    <a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+    <!--   -->
+</a>
+    <ul class="navList" title="Navigation">
+        <li><a href="${packageDoc.getRelativeRootPath()}overview-summary.html">Overview</a></li>
+        <li class="navBarCell1Rev">Package</li>
+        <li>Class</li>
+        <li><a href="${packageDoc.getRelativeRootPath()}index-all.html">Index</a></li>
+        <li><a href="${packageDoc.getRelativeRootPath()}help-doc.html">Help</a></li>
+    </ul>
+    <div class="aboutLanguage"><em><strong>Groovy Documentation</strong></em></div>
+</div>
 
-<tr>
-<td class="NavBarCell2" bgcolor="white"><font size="-2">
-&nbsp;PREV&nbsp;
-&nbsp;NEXT</font></td>
-<td class="NavBarCell2" bgcolor="white"><font size="-2">
-  <a href="${packageDoc.getRelativeRootPath()}index.html?${packageDoc.getPackagePath()}/package-summary.html" target="_top"><b>FRAMES</b></a>  &nbsp;
-&nbsp;<a href="package-summary.html" target="_top"><b>NO FRAMES</b></a>  &nbsp;
-&nbsp;<script type="text/javascript">
-  <!--
-  if(window==top) {
-    document.writeln('<A HREF="${packageDoc.getRelativeRootPath()}all-classes-frame.html"><B>All Classes</B></A>');
-  }
-  //-->
-</script>
-<noscript>
-  <A HREF="${packageDoc.getRelativeRootPath()}all-classes-frame.html"><B>All Classes</B></A>
-</noscript>
-
-
-</font></td>
-</tr>
-</tbody></table>
+<div class="subNav">
+    <ul class="navList">
+        <li><a href="${packageDoc.getRelativeRootPath()}index.html?${packageDoc.getPackagePath()}/package-summary.html" target="_top">Frames</a></li>
+        <li><a href="package-summary.html" target="_top">No Frames</a></li>
+    </ul>
+    <ul class="navList" id="all_classes_navbar_top" style="display: none;">
+        <li><a href="${packageDoc.getRelativeRootPath()}all-classes-frame.html" title="All Classes">All Classes</a></li>
+        <li><a href="${packageDoc.getRelativeRootPath()}all-commands-frame.html" title="Commands">Commands</a></li>
+        <li><a href="${packageDoc.getRelativeRootPath()}all-configs-frame.html" title="Configs">Configs</a></li>
+        <li><a href="${packageDoc.getRelativeRootPath()}all-controllers-frame.html" title="Controllers">Controllers</a></li>
+        <li><a href="${packageDoc.getRelativeRootPath()}all-domains-frame.html" title="Domains">Domains</a></li>
+        <li><a href="${packageDoc.getRelativeRootPath()}all-services-frame.html" title="Services">Services</a></li>
+        <li><a href="${packageDoc.getRelativeRootPath()}all-tag-libraries-frame.html" title="Tag Libraries">Tag Libraries</a></li>
+    </ul>
+    <div>
+        <script type="text/javascript"><!--
+        allClassesLink = document.getElementById("all_classes_navbar_top");
+        if (window == top) {
+            allClassesLink.style.display = "block";
+        }
+        else {
+            allClassesLink.style.display = "none";
+        }
+        //-->
+        </script>
+    </div>
+    <a name="skip-navbar_top"><!--   --></a>
+</div>
 <!-- ========= END OF TOP NAVBAR ========= -->
 
+<div class="header">
+    <h1 title="Package" class="title">Package ${packageDoc.getName()}</h1>
+    <% if(packageDoc.getSummary()) { %>
+        <div class="docSummary">
+            <div class="block">${packageDoc.getSummary()}</div>
+        </div>
+        <% if(packageDoc.getDescription()) { %>
+        <p>See: <a href="#package_description">Description</a></p>
+        <% } %>
+    <% } %>
+</div>
 
-<HR>
-<H2>
-Package ${packageDoc.getName()}
-</H2>
-
-${packageDoc.getDescription()}
-
-<P>&nbsp;</P>
-
+<div class="contentContainer">
+  <ul class="blockList">
 <%
 classTypes.each{ k, v ->
     if (packageDoc.getAllClasses().any{ isVisible(it) && v(it) }) {
 %>
-
-<TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
-    <TR BGCOLOR="#90DDF7" CLASS="TableHeadingColor">
-    <TH ALIGN="left" COLSPAN="2"><FONT SIZE="+2">
-    <B>${k} Summary</B></FONT></TH>
-    </TR>
-<%  for (classDoc in packageDoc.getAllClasses().findAll{ isVisible(it) && v(it) }) { %>
-        <TR BGCOLOR="white" CLASS="TableRowColor">
-        <TD WIDTH="15%"><B><A HREF="${classDoc.getSimpleName()}.html" title="class in ${packageDoc.getPackagePath()}">${classDoc.getSimpleName()}</A></B></TD>
-        <TD>${classDoc.getClassComments()}</TD>
-        </TR>
-<%  } %>
-</TABLE>
-&nbsp;
-<P>
-<DL>
-</DL>
-<hr>
+    <li class="blockList">
+        <table class="packageSummary" border="0" cellpadding="3" cellspacing="0" summary="${k} Summary table">
+            <caption><span>${k} Summary</span><span class="tabEnd">&nbsp;</span></caption>
+            <tr>
+                <th class="colFirst" scope="col">${k}</th>
+                <th class="colLast" scope="col">Description</th>
+            </tr>
+            <tbody>
+            <%
+            int index = 0;
+            for (classDoc in packageDoc.getAllClasses().findAll{ isVisible(it) && v(it) }) {
+            String cssClass = (index % 2 == 0) ? "altColor" : "rowColor"; %>
+                <tr class="${cssClass}">
+                    <td class="colFirst"><a href="${classDoc.getSimpleName()}.html" title="${k} in ${packageDoc.getPackagePath()}">${classDoc.getSimpleName()}</a></td>
+                    <td class="colLast"><div class="block">${classDoc.getClassComments()}</div></td>
+                </tr>
+            <% index ++ } %>
+            </tbody>
+        </table>
+    </li>
     <% } %>
 <% } %>
-<p>${props['footer']?:""}</p>
-<hr>
+  </ul>
+</div>
+
+<!-- ========= START OF BOTTOM NAVBAR ======= -->
+<div class="topNav">
+    <a name="navbar_top"><!--   --></a>
+    <a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+    <!--   -->
+</a>
+    <ul class="navList" title="Navigation">
+        <li><a href="${packageDoc.getRelativeRootPath()}overview-summary.html">Overview</a></li>
+        <li class="navBarCell1Rev">Package</li>
+        <li>Class</li>
+        <li><a href="${packageDoc.getRelativeRootPath()}index-all.html">Index</a></li>
+        <li><a href="${packageDoc.getRelativeRootPath()}help-doc.html">Help</a></li>
+    </ul>
+    <div class="aboutLanguage"><em><strong>Groovy Documentation</strong></em></div>
+</div>
+
+<div class="subNav">
+    <ul class="navList">
+        <li><a href="${packageDoc.getRelativeRootPath()}index.html?${packageDoc.getPackagePath()}/package-summary.html" target="_top">Frames</a></li>
+        <li><a href="package-summary.html" target="_top">No Frames</a></li>
+    </ul>
+    <ul class="navList" id="all_classes_navbar_bottom" style="display: none;">
+        <li><a href="${packageDoc.getRelativeRootPath()}all-classes-frame.html" title="All Classes">All Classes</a></li>
+        <li><a href="${packageDoc.getRelativeRootPath()}all-commands-frame.html" title="Commands">Commands</a></li>
+        <li><a href="${packageDoc.getRelativeRootPath()}all-configs-frame.html" title="Configs">Configs</a></li>
+        <li><a href="${packageDoc.getRelativeRootPath()}all-controllers-frame.html" title="Controllers">Controllers</a></li>
+        <li><a href="${packageDoc.getRelativeRootPath()}all-domains-frame.html" title="Domains">Domains</a></li>
+        <li><a href="${packageDoc.getRelativeRootPath()}all-services-frame.html" title="Services">Services</a></li>
+        <li><a href="${packageDoc.getRelativeRootPath()}all-tag-libraries-frame.html" title="Tag Libraries">Tag Libraries</a></li>
+    </ul>
+    <div>
+        <script type="text/javascript"><!--
+        allClassesLink = document.getElementById("all_classes_navbar_bottom");
+        if (window == top) {
+            allClassesLink.style.display = "block";
+        }
+        else {
+            allClassesLink.style.display = "none";
+        }
+        //-->
+        </script>
+    </div>
+    <a name="skip-navbar_top"><!--   --></a>
+</div>
+<!-- ========= END OF BOTTOM NAVBAR ========= -->
 </body>
 </html>

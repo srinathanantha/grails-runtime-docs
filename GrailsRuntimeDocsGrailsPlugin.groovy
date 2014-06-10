@@ -1,6 +1,6 @@
 class GrailsRuntimeDocsGrailsPlugin {
     // the plugin version
-    def version = "1.0.0-M1"
+    def version = "1.0.0"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "1.3.x > *"
     // the other plugins this plugin depends on
@@ -23,8 +23,10 @@ Helps to easily navigate through the Grails artifacts by categorising all the cl
 and Tag Libraries.
 '''
     def license = "APACHE"
-    
-    def organization = [name: "Imaginea", url: "http://www.imaginea.com/"]
+
+    def issueManagement = [ system: "GIT", url: "https://github.com/srinathanantha/grails-runtime-docs/issues" ]
+
+    def scm = [ url: "http://svn.grails-plugins.codehaus.org/browse/grails-plugins/" ]
     
     // URL to the plugin's documentation
     def documentation = "http://grails.org/plugin/grails-runtime-docs"

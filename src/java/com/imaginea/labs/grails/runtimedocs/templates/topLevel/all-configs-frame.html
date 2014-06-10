@@ -2,7 +2,7 @@
 <HTML>
 <HEAD>
     <TITLE>
-        Commands
+        Config Classes
     </TITLE>
     <link href="groovy.ico" type="image/x-icon" rel="shortcut icon">
     <link href="groovy.ico" type="image/x-icon" rel="icon">
@@ -11,13 +11,13 @@
 </HEAD>
 
 <BODY BGCOLOR="white">
-<h1 class="bar">Commands</h1>
+<h1 class="bar">Config Classes</h1>
 
 <div class="indexContainer">
-    <UL>
+    <ul>
 <%
   def isVisible = { java.lang.reflect.Modifier.isPublic(it.getModifiers()) || (java.lang.reflect.Modifier.isProtected(it.getModifiers()) && props.protectedScope == 'true') || (!java.lang.reflect.Modifier.isProtected(it.getModifiers()) && !java.lang.reflect.Modifier.isPrivate(it.getModifiers()) && props.packageScope == 'true') || props.privateScope == 'true' }
-  for (classDoc in rootDoc.getAllCommands().findAll(isVisible)) {
+  for (classDoc in rootDoc.getAllConfigClasses().findAll(isVisible)) {
     def packageName = classDoc.getPackage();
     String title = packageName ? (classDoc.getTypeDescription() + " in " + packageName) : "";
         %>
@@ -25,7 +25,7 @@
                title="${title}" target="classFrame">${classDoc.isInterface()?'<I>':''}${classDoc.getSimpleName()}${classDoc.isInterface()?'</I>':''}</A>
         </LI>
 <% } %>
-    </UL>
+    </ul>
 </div>
 </BODY>
 </HTML>

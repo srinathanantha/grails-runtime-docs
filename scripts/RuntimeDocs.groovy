@@ -16,17 +16,17 @@ includeTargets << grailsScript("_GrailsRun")
 javaDocDir = "${grailsSettings.docsOutputDir}\\api"
 groovyDocDir = "${grailsSettings.docsOutputDir}\\gapi"
 docEncoding = "UTF-8"
-docSourceLevel = "1.5"
-links = ['http://java.sun.com/j2se/1.5.0/docs/api/']
+docSourceLevel = "1.7"
+links = ['http://docs.oracle.com/javase/7/docs/api/']
 
 target(default: "Generates Java and Groovy documentation for a Grails Application from runtime including the dynamically added methods and properties.") {
-    depends(packageApp, classpath, compile, javadoc, groovydoc, createIndex)
+    depends(clean, packageApp, classpath, compile, javadoc, groovydoc, createIndex)
 }
 
 target(setupDoc: "Sets up the doc directories") {
     ant.mkdir(dir: grailsSettings.docsOutputDir)
-    ant.mkdir(dir: groovyDocDir)
     ant.mkdir(dir: javaDocDir)
+    ant.mkdir(dir: groovyDocDir)
 }
 
 target(javadoc: "Produces Java Documentation") {
@@ -74,10 +74,10 @@ target(groovydoc: "Produces Groovy Documentation with runtime properties") {
     depends(setupDoc, loadApp, runApp)
 
     Properties properties = new Properties();
-    properties.setProperty("windowTitle", "Groovy Documentation");
-    properties.setProperty("docTitle", "Groovy Documentation");
-    properties.setProperty("footer", "Groovy Documentation");
-    properties.setProperty("header", "Groovy Documentation");
+    properties.setProperty("windowTitle", "$grailsAppName API");
+    properties.setProperty("docTitle", "$grailsAppName <br> API Specification");
+    properties.setProperty("header", "$grailsAppName API");
+    properties.setProperty("footer", "$grailsAppName API");
     properties.setProperty("publicScope", "true");
     properties.setProperty("protectedScope", "true");
     properties.setProperty("packageScope", "true");
@@ -90,9 +90,11 @@ target(groovydoc: "Produces Groovy Documentation with runtime properties") {
     String TEMPLATE_BASEDIR = "com/imaginea/labs/grails/runtimedocs/templates/";
     String[] DEFAULT_DOC_TEMPLATES = [ // top level templates
         TEMPLATE_BASEDIR + "topLevel/index.html",
+        TEMPLATE_BASEDIR + "topLevel/index-all.html",
         TEMPLATE_BASEDIR + "topLevel/overview-frame.html",
         TEMPLATE_BASEDIR + "topLevel/overview-summary.html",
         TEMPLATE_BASEDIR + "topLevel/all-classes-frame.html",
+        TEMPLATE_BASEDIR + "topLevel/all-configs-frame.html",
         TEMPLATE_BASEDIR + "topLevel/all-controllers-frame.html",
         TEMPLATE_BASEDIR + "topLevel/all-services-frame.html",
         TEMPLATE_BASEDIR + "topLevel/all-domains-frame.html",
@@ -100,8 +102,12 @@ target(groovydoc: "Produces Groovy Documentation with runtime properties") {
         TEMPLATE_BASEDIR + "topLevel/all-tag-libraries-frame.html",
         TEMPLATE_BASEDIR + "topLevel/help-doc.html",
         TEMPLATE_BASEDIR + "topLevel/stylesheet.css",
-        TEMPLATE_BASEDIR + "topLevel/inherit.gif",
-        TEMPLATE_BASEDIR + "topLevel/groovy.ico"
+        TEMPLATE_BASEDIR + "topLevel/resources/inherit.gif",
+        TEMPLATE_BASEDIR + "topLevel/resources/groovy.ico",
+        TEMPLATE_BASEDIR + "topLevel/resources/background.gif",
+        TEMPLATE_BASEDIR + "topLevel/resources/tab.gif",
+        TEMPLATE_BASEDIR + "topLevel/resources/titlebar.gif",
+        TEMPLATE_BASEDIR + "topLevel/resources/titlebar_end.gif"
     ];
     String[] DEFAULT_PACKAGE_TEMPLATES = [ // package level templates
         TEMPLATE_BASEDIR + "packageLevel/package-frame.html",
