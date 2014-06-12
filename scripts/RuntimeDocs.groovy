@@ -126,9 +126,8 @@ target(groovydoc: "Produces Groovy Documentation with runtime properties") {
     def clazz = classLoader.loadClass("com.imaginea.labs.grails.runtimedocs.GroovyRuntimeDocTemplateEngine", true);
     def templateEngine = clazz.getConstructor(classArgs).newInstance(objectArgs);
     if (templateEngine != null) {
-        FileOutputTool output = new FileOutputTool();
-        classArgs = [OutputTool.class, templateEngine.getClass(), Properties.class];
-        objectArgs = [output, templateEngine, properties];
+        classArgs = [templateEngine.getClass()];
+        objectArgs = [templateEngine];
         clazz = classLoader.loadClass("com.imaginea.labs.grails.runtimedocs.GroovyRuntimeDocWriter", true);
         def writer = clazz.getConstructor(classArgs).newInstance(objectArgs);
 

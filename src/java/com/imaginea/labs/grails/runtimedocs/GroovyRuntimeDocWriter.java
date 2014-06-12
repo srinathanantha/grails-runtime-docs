@@ -1,26 +1,21 @@
 package com.imaginea.labs.grails.runtimedocs;
 
-import org.codehaus.groovy.tools.groovydoc.OutputTool;
+import org.codehaus.groovy.runtime.ResourceGroovyMethods;
 
 import java.io.File;
 import java.util.Iterator;
-import java.util.Properties;
 
 /**
  * Writes RuntimeDocs Resources to Destination.
  */
 public class GroovyRuntimeDocWriter {
-    private OutputTool output;
     private GroovyRuntimeDocTemplateEngine templateEngine;
     public static final String FS = "/";
     public static final String BSS = "\\";
     public static final String RESOURCES = "resources";
-    private Properties properties;
 
-    public GroovyRuntimeDocWriter(OutputTool output, GroovyRuntimeDocTemplateEngine templateEngine, Properties properties) {
-        this.output = output;
+    public GroovyRuntimeDocWriter(GroovyRuntimeDocTemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
-        this.properties = properties;
     }
 
     public void writeClasses(RootDoc rootDoc, String destDir) throws Exception {
@@ -34,14 +29,14 @@ public class GroovyRuntimeDocWriter {
         String renderedSrc = templateEngine.applyClassTemplates(classDoc);
         if (renderedSrc != null) {
             System.out.println("Generating " + destFileName);
-            output.writeToOutput(destFileName, renderedSrc);
+            writeToOutput(destFileName, renderedSrc);
         }
     }
 
     public void writePackages(RootDoc rootDoc, String destDir) throws Exception {
         for (PackageDoc packageDoc : rootDoc.getPackages()) {
             if (new File(packageDoc.getPackagePath()).isAbsolute()) continue;
-            output.makeOutputArea(destDir + FS + packageDoc.getPackagePath());
+            makeOutputArea(destDir + FS + packageDoc.getPackagePath());
             writePackageToOutput(packageDoc, destDir);
         }
         StringBuilder sb = new StringBuilder();
@@ -51,7 +46,7 @@ public class GroovyRuntimeDocWriter {
         }
         String destFileName = destDir + FS + "package-list";
         System.out.println("Generating " + destFileName);
-        output.writeToOutput(destFileName, sb.toString());
+        writeToOutput(destFileName, sb.toString());
     }
 
     public void writePackageToOutput(PackageDoc packageDoc, String destDir) throws Exception {
@@ -62,13 +57,13 @@ public class GroovyRuntimeDocWriter {
             String fileName = new File(template).getName();
             String filePath = destDir + FS + packageDoc.getPackagePath() + FS + fileName;
             System.out.println("Generating " + filePath);
-            output.writeToOutput(filePath, renderedSrc);
+            writeToOutput(filePath, renderedSrc);
         }
     }
 
     public void writeRoot(RootDoc rootDoc, String destDir) throws Exception {
-        output.makeOutputArea(destDir);
-        output.makeOutputArea(destDir + FS + RESOURCES);
+        makeOutputArea(destDir);
+        makeOutputArea(destDir + FS + RESOURCES);
         writeRootDocToOutput(rootDoc, destDir);
     }
 
@@ -86,12 +81,23 @@ public class GroovyRuntimeDocWriter {
                 filePath = destDir + FS + fileName;
                 System.out.println("Generating " + filePath);
                 String renderedSrc = templateEngine.applyRootDocTemplate(template, rootDoc);
-                output.writeToOutput(filePath, renderedSrc);
+                writeToOutput(filePath, renderedSrc);
             }
         }
     }
 
     private boolean hasBinaryExtension(String template) {
         return template.endsWith(".gif") || template.endsWith(".ico");
+    }
+
+    private void makeOutputArea(String filename) {
+        File dir = new File(filename);
+        dir.mkdirs();
+    }
+
+    private void writeToOutput(String fileName, String text) throws Exception {
+        File file = new File(fileName);
+        file.getParentFile().mkdirs();
+        ResourceGroovyMethods.write(file, text);
     }
 }
