@@ -1,9 +1,6 @@
 package com.imaginea.labs.grails.runtimedocs
 
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
-import org.codehaus.groovy.grails.plugins.web.filters.FiltersConfigArtefactHandler
-import org.grails.plugin.resources.artefacts.ResourceMapperArtefactHandler
-import org.grails.plugin.resources.artefacts.ResourcesArtefactHandler
 
 /**
  * Builds Data Structures needed for documenting both compile-time and runtime properties of all Grails Artifacts  
@@ -53,9 +50,9 @@ class RootDoc {
                 else if (grailsApp.isBootstrapClass(clazz) || grailsApp.isCodecClass(clazz)
                         || grailsApp.isUrlMappingsClass(clazz)
                         || clazz.getSimpleName().endsWith("Config")
-                        || grailsApp.isArtefactOfType(FiltersConfigArtefactHandler.TYPE, clazz)
-                        || grailsApp.isArtefactOfType(ResourcesArtefactHandler.TYPE, clazz)
-                        || grailsApp.isArtefactOfType(ResourceMapperArtefactHandler.TYPE, clazz))
+                        || clazz.getSimpleName().endsWith("Filters")
+                        || clazz.getSimpleName().endsWith("esources") //Resources/resources
+                        || clazz.getSimpleName().endsWith("ResourceMapper"))
                     allConfigClasses.add(classDoc);
             }
         }
