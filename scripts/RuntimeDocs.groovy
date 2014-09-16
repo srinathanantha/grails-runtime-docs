@@ -1,7 +1,5 @@
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
 import org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager
-import org.codehaus.groovy.tools.groovydoc.FileOutputTool
-import org.codehaus.groovy.tools.groovydoc.OutputTool
 
 /**
  * Gant Script that generates Java and Groovy documentation for a Grails Application
@@ -155,7 +153,7 @@ target(createIndex: "Produces an index.html page in the root directory") {
 	<body>
 		<a href="api/index.html">Java API docs</a><br />
 		<a href="gapi/index.html">Groovy API docs</a><br />
-	</body>	
+	</body>
 </html>
 """
     }
