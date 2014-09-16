@@ -1,8 +1,6 @@
 package com.imaginea.labs.grails.runtimedocs;
 
-import org.codehaus.groovy.runtime.ResourceGroovyMethods;
-
-import java.io.File;
+import java.io.*;
 import java.util.Iterator;
 
 /**
@@ -95,9 +93,52 @@ public class GroovyRuntimeDocWriter {
         dir.mkdirs();
     }
 
+    /*
+        Taken from FileOutputTool
+    */
     private void writeToOutput(String fileName, String text) throws Exception {
         File file = new File(fileName);
         file.getParentFile().mkdirs();
-        ResourceGroovyMethods.write(file, text);
+        write(file, text);
+    }
+
+
+    /**
+     * Write the text to the File. Taken from DefaultGroovyMethods.
+     *
+     * @param file a File
+     * @param text the text to write to the File
+     * @throws IOException if an IOException occurs.
+     * @since 1.0
+     */
+    public void write(File file, String text) throws IOException {
+        Writer writer = null;
+        try {
+            writer = new FileWriter(file);
+            writer.write(text);
+            writer.flush();
+
+            Writer temp = writer;
+            writer = null;
+            temp.close();
+        } finally {
+            closeWithWarning(writer);
+        }
+    }
+
+    /**
+     * Close the Closeable. Logging a warning if any problems occur.
+     * Taken from DefaultGroovyMethods.
+     *
+     * @param c the thing to close
+     */
+    public void closeWithWarning(Closeable c) {
+        if (c != null) {
+            try {
+                c.close();
+            } catch (IOException e) {
+                System.out.println("Caught exception during close(): " + e);
+            }
+        }
     }
 }

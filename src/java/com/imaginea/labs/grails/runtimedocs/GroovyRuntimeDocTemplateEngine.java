@@ -3,14 +3,9 @@ package com.imaginea.labs.grails.runtimedocs;
 import groovy.text.GStringTemplateEngine;
 import groovy.text.Template;
 import groovy.text.TemplateEngine;
-import org.codehaus.groovy.runtime.DefaultGroovyMethodsSupport;
-import org.codehaus.groovy.runtime.IOGroovyMethods;
 import org.codehaus.groovy.tools.groovydoc.ClasspathResourceManager;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.*;
 
 
@@ -115,13 +110,54 @@ public class GroovyRuntimeDocTemplateEngine {
             try {
                 InputStream inputStream = ((ClasspathResourceManager) resourceManager).getInputStream(template);
                 outputStream = new FileOutputStream(destFileName);
-                IOGroovyMethods.leftShift(outputStream, inputStream);
+                leftShift(outputStream, inputStream);
             } catch (IOException e) {
                 System.out.println("Resource " + template + " skipped due to: " + e.getMessage());
             } catch (NullPointerException e) {
                 System.out.println("Resource " + template + " not found so skipped");
             } finally {
-                DefaultGroovyMethodsSupport.closeQuietly(outputStream);
+                closeQuietly(outputStream);
+            }
+        }
+    }
+
+    /* Methods from DefaultGroovyMethods */
+
+    /**
+     * Pipe an InputStream into an OutputStream for efficient stream copying.
+     *
+     * @param self stream on which to write
+     * @param in   stream to read from
+     * @return the outputstream itself
+     * @throws IOException if an I/O error occurs.
+     * @since 1.0
+     */
+    public static OutputStream leftShift(OutputStream self, InputStream in) throws IOException {
+        byte[] buf = new byte[1024];
+        while (true) {
+            int count = in.read(buf, 0, buf.length);
+            if (count == -1) break;
+            if (count == 0) {
+                Thread.yield();
+                continue;
+            }
+            self.write(buf, 0, count);
+        }
+        self.flush();
+        return self;
+    }
+
+    /**
+     * Close the Closeable. Ignore any problems that might occur.
+     *
+     * @param c the thing to close
+     */
+    public static void closeQuietly(Closeable c) {
+        if (c != null) {
+            try {
+                c.close();
+            } catch (IOException e) {
+                /* ignore */
             }
         }
     }
