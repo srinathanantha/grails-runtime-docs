@@ -64,6 +64,9 @@
       <library name="Grails User Library (grails-runtime-docs)">
         <CLASSES>
           <root url="file://$MODULE_DIR$/lib" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.grails.plugins/rest-client-builder/zips/rest-client-builder-1.0.3.zip!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.grails.plugins/release/zips/release-2.2.0.zip!/" />
+          <root url="jar://$USER_HOME$/.grails/ivy-cache/org.grails.plugins/tomcat/zips/tomcat-2.2.0.zip!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -71,6 +74,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="groovy-2.1.7" level="application" />
+    <orderEntry type="module" module-name="grails-runtime-docs-grailsPlugins" />
   </component>
 </module>
 
