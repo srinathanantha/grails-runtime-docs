@@ -1,5 +1,4 @@
 ## Grails Runtime Docs
-===================
 
 An API Documentation plug-in for Grails Projects that also displays the dynamic methods and properties added to the grails artifacts along with their source information.
 
